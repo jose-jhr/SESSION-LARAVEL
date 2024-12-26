@@ -1,3 +1,4 @@
+```php
 <?php
 
 namespace App\Http\Controllers\Auth;
@@ -39,8 +40,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 }
-
-
 
 
 
