@@ -1,3 +1,51 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Models\User;
+
+class AuthController extends Controller
+{
+    // Método para iniciar sesión y devolver el JWT
+    public function login(Request $request)
+    {
+        // Validar las credenciales del usuario
+        $credentials = $request->only('email', 'password');
+
+        if (auth()->attempt($credentials)) {
+            // Crear el token JWT
+            $user = auth()->user();
+            $token = JWTAuth::fromUser($user);
+            return response()->json(['token' => $token]);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    }
+
+    // Método para obtener el usuario autenticado a partir del token
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
+    // Método para cerrar sesión
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+}
+
+
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
